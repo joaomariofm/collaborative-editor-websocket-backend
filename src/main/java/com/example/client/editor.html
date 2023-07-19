@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Editor colaborativo</title>
+
+    <script src="js/PatienceDiff.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+
+    <script>
+        let currentTextAreaContent = []
+
+        const stompClient = new StompJs.Client({
+            brokerURL: 'ws://192.168.6.119:8080/gs-guide-websocket'
+        });
+
+        stompClient.activate();
+
+        stompClient.onConnect = (frame) => {
+            console.log('Connected: ' + frame);
+
+            stompClient.subscribe('/app/getSharedFile', (sharedFile) => {
+                const body = JSON.parse(sharedFile.body)
+
+                currentTextAreaContent = body.join("")
+
+                document.getElementById("editor-textarea").value = currentTextAreaContent;
+
+                console.log("current state of shared file from server: " + currentTextAreaContent)
+            });
+        };
+
+        function handleTextAreaChange(event) {
+            let newTextAreaContent = event.target.value.split("");
+
+            let diff = patienceDiff(currentTextAreaContent, newTextAreaContent)
+
+            console.log(diff)
+
+            let operation = { type: "", value: [], position: "" }
+
+            if (diff.lineCountDeleted !== 0) {
+                operation.type = "delete"
+
+                const letterData = diff.lines.filter(line => (line.bIndex === -1))[0]
+
+                operation.value = letterData.line
+                operation.position = letterData.aIndex
+            } else if(diff.lineCountInserted !== 0) {
+                operation.type = "insert"
+
+                const letterData = diff.lines.filter(line => (line.aIndex === -1))[0]
+                operation.value = letterData.line
+                operation.position = letterData.bIndex
+            }
+
+            console.log("patienceDiff: ", diff)
+            console.log("operation: ", operation)
+
+            stompClient.publish({
+                destination: "/app/doOperation",
+                body: JSON.stringify(operation)
+            });
+
+            currentTextAreaContent = newTextAreaContent
+        }
+    </script>
+
+    <style>
+        #editor-textarea {
+            width: 800px;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+  <main>
+    <textarea
+            id="editor-textarea"
+            placeholder="Digite aqui"
+            oninput="handleTextAreaChange(event)"
+    ></textarea>
+  </main>
+</body>
+</html>
