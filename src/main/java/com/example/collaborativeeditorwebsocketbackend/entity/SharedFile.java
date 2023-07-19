@@ -1,5 +1,7 @@
 package com.example.collaborativeeditorwebsocketbackend.entity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Vector;
 
 public final class SharedFile {
@@ -11,13 +13,7 @@ public final class SharedFile {
     }
 
     public synchronized static SharedFile init() {
-        Vector<Character> text = new Vector<>();
-        text.add('E');
-        text.add('d');
-        text.add('i');
-        text.add('t');
-        text.add('o');
-        text.add('r');
+        Vector<Character> text = new Vector<>(Arrays.asList('E', 'd', 'i', 't', 'o', 'r'));
 
         System.out.println(text.toString());
         if (instace == null) {
@@ -34,7 +30,9 @@ public final class SharedFile {
         return this.text;
     }
 
-    public void setText(Operation operation) {
+    public synchronized void setText(Operation operation) {
         System.out.println("operation inside setText: " + operation);
+        operation.getiOperation().doOperation(text, operation);
+        System.out.println(text);
     }
 }
