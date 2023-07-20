@@ -28,6 +28,16 @@
 
                 console.log("current state of shared file from server: " + currentTextAreaContent)
             });
+
+            stompClient.subscribe("/topic/versionUpdate", (newFileVersion) => {
+                const body = JSON.parse(newFileVersion.body)
+
+                currentTextAreaContent = body.join("")
+
+                document.getElementById("editor-textarea").value = currentTextAreaContent;
+
+                console.log(body)
+            })
         };
 
         function handleTextAreaChange(event) {
