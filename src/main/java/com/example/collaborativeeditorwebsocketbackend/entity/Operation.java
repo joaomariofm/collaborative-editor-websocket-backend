@@ -30,7 +30,7 @@ public class Operation {
 
     public static IOperation getOperationInterface(String operationType) {
         return switch (operationType) {
-            case "insert" -> ((text, operation) -> text.add(operation.getValue()[0]));
+            case "insert" -> ((text, operation) -> text.add(operation.getPosition(), operation.getValue()[0]));
             case "delete" -> ((text, operation) -> text.remove(operation.getPosition()));
             default -> null;
         };

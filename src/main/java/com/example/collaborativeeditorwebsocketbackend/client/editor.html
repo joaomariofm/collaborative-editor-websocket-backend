@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>Editor colaborativo</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
     <script src="js/PatienceDiff.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
 
@@ -34,13 +39,27 @@
 
                 currentTextAreaContent = body.join("")
 
-                document.getElementById("editor-textarea").value = currentTextAreaContent;
-
                 console.log(body)
+
+                document.getElementById("editor-textarea").value = currentTextAreaContent;
             })
         };
 
+        /* function getCursorPosition() {
+            const cursorPosition = document.getElementById("editor-textarea").selectionStart;
+            console.log('Cursor position:', cursorPosition);
+            return cursorPosition;
+        } */
+
+        /* function setCursorPosition(position) {
+            let textarea = document.getElementById("editor-textarea");
+            textarea.selectionStart = position;
+            textarea.selectionEnd = position;
+        } */
+
         function handleTextAreaChange(event) {
+            // cursorPosition = getCursorPosition();
+
             let newTextAreaContent = event.target.value.split("");
 
             let diff = patienceDiff(currentTextAreaContent, newTextAreaContent)
@@ -75,21 +94,17 @@
             currentTextAreaContent = newTextAreaContent
         }
     </script>
-
-    <style>
-        #editor-textarea {
-            width: 800px;
-            height: 300px;
-        }
-    </style>
 </head>
 <body>
   <main>
-    <textarea
-            id="editor-textarea"
-            placeholder="Digite aqui"
-            oninput="handleTextAreaChange(event)"
-    ></textarea>
+      <div class="textarea-wrapper">
+          <textarea
+                  id="editor-textarea"
+                  placeholder="Digite aqui"
+                  spellcheck="false"
+                  oninput="handleTextAreaChange(event)"
+          ></textarea>
+      </div>
   </main>
 </body>
 </html>
