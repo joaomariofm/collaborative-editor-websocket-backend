@@ -16,7 +16,7 @@
         let currentTextAreaContent = []
 
         const stompClient = new StompJs.Client({
-            brokerURL: 'ws://localhost:8080/gs-guide-websocket'
+            brokerURL: 'wss://projetoufg.com.br/gs-guide-websocket'
         });
 
         stompClient.activate();
@@ -30,8 +30,6 @@
                 currentTextAreaContent = body.join("")
 
                 document.getElementById("editor-textarea").value = currentTextAreaContent;
-
-                console.log("current state of shared file from server: " + currentTextAreaContent)
             });
 
             stompClient.subscribe("/topic/versionUpdate", (newFileVersion) => {
@@ -39,7 +37,7 @@
 
                 currentTextAreaContent = body.join("")
 
-                console.log(body)
+                console.log("update from server: ", body)
 
                 document.getElementById("editor-textarea").value = currentTextAreaContent;
             })
@@ -64,8 +62,6 @@
 
             let diff = patienceDiff(currentTextAreaContent, newTextAreaContent)
 
-            console.log(diff)
-
             let operation = { type: "", value: [], position: "" }
 
             if (diff.lineCountDeleted !== 0) {
@@ -83,8 +79,7 @@
                 operation.position = letterData.bIndex
             }
 
-            console.log("patienceDiff: ", diff)
-            console.log("operation: ", operation)
+            console.log("operation you did: ", operation)
 
             stompClient.publish({
                 destination: "/app/doOperation",

@@ -9,7 +9,7 @@ import java.util.Vector;
 @Controller
 public class GetSharedFileController {
     @SubscribeMapping("/getSharedFile")
-    public Vector<Character> getSharedFile() throws Exception {
-        return SharedFile.getInstance().getText();
+    public SharedFile getSharedFile() throws Exception {
+        return SharedFile.getInstance();
     }
 }

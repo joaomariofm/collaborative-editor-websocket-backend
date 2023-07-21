@@ -16,6 +16,6 @@ public class DoOperationRunnable implements Runnable{
     @Override
     public void run() {
         SharedFile.getInstance().setText(operation);
-        messagingTemplate.convertAndSend("/topic/versionUpdate", SharedFile.getInstance().getText());
+        messagingTemplate.convertAndSend("/topic/versionUpdate", SharedFile.getInstance());
     }
 }
