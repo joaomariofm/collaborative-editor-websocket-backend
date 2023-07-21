@@ -5,18 +5,18 @@ import java.util.Vector;
 
 public final class SharedFile {
     private static SharedFile instance;
-    public Vector<Character> text;
+    public Vector<Character> textContent;
 
     public int version;
 
-    public Vector<Operation> history;
+    public Vector<Operation> operations;
 
     public String currentUserId;
 
     private SharedFile(Vector<Character> text) {
-        this.text = text;
+        this.textContent = text;
         this.version = 0;
-        this.history = new Vector<>();
+        this.operations = new Vector<>();
     }
 
     public synchronized static SharedFile init() {
@@ -34,17 +34,16 @@ public final class SharedFile {
     }
 
     public synchronized Vector<Character> getText() {
-        return this.text;
+        return this.textContent;
     }
 
     public synchronized void setText(Operation operation) {
         System.out.println("operation inside setText: " + operation);
-        operation.getiOperation().doOperation(text, operation);
-        System.out.println(text);
+        operation.getiOperation().doOperation(textContent, operation);
+        System.out.println(textContent);
 
-        this.history.add(operation);
+        this.operations.add(operation);
         this.version++;
-
-        // this.currentUserId
+        this.currentUserId = operation.getUserId();
     }
 }
