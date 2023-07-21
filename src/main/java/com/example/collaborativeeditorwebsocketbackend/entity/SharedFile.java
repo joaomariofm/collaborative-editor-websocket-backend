@@ -33,10 +33,6 @@ public final class SharedFile {
         return instance;
     }
 
-    public synchronized Vector<Character> getText() {
-        return this.textContent;
-    }
-
     public synchronized void setText(Operation operation) {
         System.out.println("operation inside setText: " + operation);
         operation.getiOperation().doOperation(textContent, operation);
@@ -45,5 +41,7 @@ public final class SharedFile {
         this.operations.add(operation);
         this.version++;
         this.currentUserId = operation.getUserId();
+
+        System.out.println("operation completed");
     }
 }

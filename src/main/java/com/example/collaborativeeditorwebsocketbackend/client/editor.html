@@ -14,6 +14,8 @@
 
     <script>
         let currentTextAreaContent = []
+        let version = null
+        let userId = null
 
         const stompClient = new StompJs.Client({
             brokerURL: 'ws://localhost:8080/gs-guide-websocket'
@@ -27,7 +29,9 @@
             stompClient.subscribe('/app/getSharedFile', (sharedFile) => {
                 const body = JSON.parse(sharedFile.body)
 
-                currentTextAreaContent = body.join("")
+                currentTextAreaContent = body.textContent.join("")
+                version = body.version;
+                userId = Math.floor(Math.random() * 100000000);
 
                 document.getElementById("editor-textarea").value = currentTextAreaContent;
             });
@@ -35,11 +39,12 @@
             stompClient.subscribe("/topic/versionUpdate", (newFileVersion) => {
                 const body = JSON.parse(newFileVersion.body)
 
-                currentTextAreaContent = body.join("")
-
                 console.log("update from server: ", body)
 
-                document.getElementById("editor-textarea").value = currentTextAreaContent;
+                if (body.userId != userId) {
+                    currentTextAreaContent = body.textContent.join("");
+                    document.getElementById("editor-textarea").value = currentTextAreaContent;
+                }
             })
         };
 
@@ -62,7 +67,13 @@
 
             let diff = patienceDiff(currentTextAreaContent, newTextAreaContent)
 
-            let operation = { type: "", value: [], position: "" }
+            let operation = {
+                type: "",
+                value: [],
+                position: "",
+                version,
+                userId
+            }
 
             if (diff.lineCountDeleted !== 0) {
                 operation.type = "delete"
