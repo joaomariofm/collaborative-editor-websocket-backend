@@ -12,7 +12,7 @@ public class DoOperationService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    public void handleMultipleOperation(Operation operation) throws InterruptedException {
+    public void handleMultipleOperation(Operation operation)  {
         Thread thread = new Thread(new DoOperationRunnable(operation, messagingTemplate));
         thread.start();
         //thread.join();

@@ -8,7 +8,22 @@ public class Operation {
     private int position;
     private int version;
     private String userId;
-    private IOperation iOperation;
+
+    public Operation(String type, char[] value, int position, int version, String userId) {
+        this.type = type;
+        this.value = value;
+        this.position = position;
+        this.version = version;
+        this.userId = userId;
+    }
+
+    public Operation() {
+
+    }
+
+    public static Operation createOperationClone(Operation operation) {
+        return new Operation(operation.getType(), operation.getValue(), operation.getPosition(), operation.getVersion(), operation.getUserId());
+    }
 
     public void setType(String type) {
         this.type = type;
@@ -50,22 +65,6 @@ public class Operation {
         return position;
     }
 
-    public IOperation getiOperation() {
-        return iOperation;
-    }
-
-    public void setiOperation(IOperation iOperation) {
-        this.iOperation = iOperation;
-    }
-
-    public static IOperation getOperationInterface(String operationType) {
-        return switch (operationType) {
-            case "insert" -> ((text, operation) -> text.add(operation.getPosition(), operation.getValue()[0]));
-            case "delete" -> ((text, operation) -> text.remove(operation.getPosition()));
-            default -> null;
-        };
-    }
-
     @Override
     public String toString() {
         return "Operation{" +
@@ -74,7 +73,6 @@ public class Operation {
                 ", position=" + position +
                 ", version=" + version +
                 ", userId='" + userId + '\'' +
-                ", iOperation=" + iOperation +
                 '}';
     }
 }

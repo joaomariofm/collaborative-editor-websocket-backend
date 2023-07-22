@@ -15,8 +15,7 @@ public class SharedFileOperationController {
     }
 
     @MessageMapping("/doOperation")
-    public void doOperation(Operation operation) throws Exception {
-        operation.setiOperation(Operation.getOperationInterface(operation.getType()));
+    public void doOperation(Operation operation) {
         operationService.handleMultipleOperation(operation);
         System.out.println("operation note after execution: " + operation.getType() + " " + operation.getPosition() + " " + operation.getValue()[0]);
     }
