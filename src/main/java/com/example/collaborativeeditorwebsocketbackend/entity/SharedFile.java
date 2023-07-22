@@ -2,9 +2,7 @@ package com.example.collaborativeeditorwebsocketbackend.entity;
 
 import com.example.collaborativeeditorwebsocketbackend.utils.TransformOperationUtils;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
 
 public final class SharedFile {
     private static SharedFile instance;
@@ -23,7 +21,7 @@ public final class SharedFile {
     }
 
     public synchronized static SharedFile init() {
-        ArrayList<Character> text = new ArrayList<>(Arrays.asList('E', 'd', 'i', 't', 'o', 'r'));
+        List<Character> text = new ArrayList<>();
 
         System.out.println(text.toString());
         if (instance == null) {
@@ -36,9 +34,6 @@ public final class SharedFile {
         return instance;
     }
 
-    public synchronized List<Character> getText() {
-        return this.textContent;
-    }
 
     public void setCurrentUserId(String currentUserId) {
         this.currentUserId = currentUserId;

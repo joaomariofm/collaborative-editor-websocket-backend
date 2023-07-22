@@ -5,8 +5,6 @@ import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import java.util.UUID;
 
-import java.util.Vector;
-
 @Controller
 public class GetSharedFileController {
     @SubscribeMapping("/getSharedFile")
