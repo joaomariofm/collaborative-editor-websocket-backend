@@ -40,7 +40,7 @@ public final class SharedFile {
         this.currentUserId = currentUserId;
     }
 
-    public synchronized void setText(Operation operation, SimpMessagingTemplate messagingTemplate) {
+    public synchronized void setText(Operation operation) {
         System.out.println("operation inside setText: " + operation);
         Operation operationTreatedWithOT = TransformOperationUtils.transformOperation(operation, operations);
 
@@ -53,6 +53,5 @@ public final class SharedFile {
 
         this.operations.add(operationTreatedWithOT);
         this.version++;
-        messagingTemplate.convertAndSend("/topic/versionUpdate", operation);
     }
 }
