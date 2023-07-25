@@ -3,6 +3,7 @@ package com.example.collaborativeeditorwebsocketbackend.entity;
 import com.example.collaborativeeditorwebsocketbackend.utils.TransformOperationUtils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 public final class SharedFile {
@@ -43,6 +44,7 @@ public final class SharedFile {
     public synchronized void setText(Operation operation, SimpMessagingTemplate messagingTemplate) {
         System.out.println("operation inside setText: " + operation);
         Operation operationTreatedWithOT = TransformOperationUtils.transformOperation(operation, operations);
+        var textContentCopy = List.copyOf(textContent);
 
         if(operationTreatedWithOT.getType().equals("insert")) {
             textContent.add(operationTreatedWithOT.getPosition(), operationTreatedWithOT.getValue()[0]);
@@ -54,7 +56,7 @@ public final class SharedFile {
         this.operations.add(operationTreatedWithOT);
         System.out.println(this.operations);
         this.version++;
-        operation.setVersionText(getInstance().textContent);
+        operation.setVersionText(textContentCopy);
         messagingTemplate.convertAndSend("/topic/versionUpdate", operation);
     }
 }
