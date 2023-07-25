@@ -1,6 +1,7 @@
 package com.example.collaborativeeditorwebsocketbackend.entity;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Operation {
     private String type;
@@ -8,6 +9,7 @@ public class Operation {
     private int position;
     private int version;
     private String userId;
+    private List<Character> versionText;
 
     public Operation(String type, char[] value, int position, int version, String userId) {
         this.type = type;
@@ -63,6 +65,14 @@ public class Operation {
 
     public int getPosition() {
         return position;
+    }
+
+    public List<Character> getVersionText() {
+        return versionText;
+    }
+
+    public void setVersionText(List<Character> versionText) {
+        this.versionText = versionText;
     }
 
     @Override
