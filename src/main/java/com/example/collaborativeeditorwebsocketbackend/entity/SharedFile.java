@@ -31,7 +31,7 @@ public final class SharedFile {
         return instance;
     }
 
-    public synchronized static SharedFile getInstance() {
+    public static synchronized SharedFile getInstance() {
         return instance;
     }
 
@@ -40,7 +40,7 @@ public final class SharedFile {
         this.currentUserId = currentUserId;
     }
 
-    public synchronized void setText(Operation operation) {
+    public synchronized void setText(Operation operation, SimpMessagingTemplate messagingTemplate) {
         System.out.println("operation inside setText: " + operation);
         Operation operationTreatedWithOT = TransformOperationUtils.transformOperation(operation, operations);
 
@@ -54,5 +54,7 @@ public final class SharedFile {
         this.operations.add(operationTreatedWithOT);
         System.out.println(this.operations);
         this.version++;
+        operation.setVersionText(getInstance().textContent);
+        messagingTemplate.convertAndSend("/topic/versionUpdate", operation);
     }
 }
