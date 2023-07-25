@@ -14,7 +14,7 @@ public class TransformOperationUtils {
                 .filter(operation -> operation.getVersion() >= incomingOperation.getVersion()).sorted(Comparator.comparing(Operation::getVersion)).collect(Collectors.toList());
 
         operationsToLookWhenTransforming.forEach(appliedOperation -> {
-            if(transformedOperation.getPosition() > appliedOperation.getPosition()) {
+            if(transformedOperation.getPosition() >= appliedOperation.getPosition()) {
                 if(appliedOperation.getType().equals("insert")) {
                     transformedOperation.setPosition(transformedOperation.getPosition() + 1);
                 } else {
