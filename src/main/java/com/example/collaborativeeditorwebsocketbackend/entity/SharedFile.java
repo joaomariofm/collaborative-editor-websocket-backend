@@ -52,6 +52,7 @@ public final class SharedFile {
         System.out.println(textContent);
 
         this.operations.add(operationTreatedWithOT);
+        System.out.println(this.operations);
         this.version++;
     }
 }
