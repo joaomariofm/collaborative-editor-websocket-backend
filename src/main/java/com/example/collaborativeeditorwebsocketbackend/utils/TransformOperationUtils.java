@@ -18,7 +18,9 @@ public class TransformOperationUtils {
                 if(appliedOperation.getType().equals("insert")) {
                     transformedOperation.setPosition(transformedOperation.getPosition() + 1);
                 } else {
-                    transformedOperation.setPosition(transformedOperation.getPosition() - 1);
+                    if(transformedOperation.getPosition() > 0) {
+                        transformedOperation.setPosition(transformedOperation.getPosition() - 1);
+                    }
                 }
             }
         });
